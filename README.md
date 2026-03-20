@@ -15,6 +15,13 @@ cargo build --release
 # Add ./target/release/yourmom to your PATH
 ```
 
+## Documents
+
+> This thing is VERY big so watch out
+Full language breakdown
+[Docs](./LANGUAGE_SPEC.md)
+Library overview and what they do
+[Docs](./Libraries.md)
 ---
 
 ## Quick Start
