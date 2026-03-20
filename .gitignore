@@ -1,0 +1,19 @@
+# Build artifacts
+target/
+
+# Generated C files from compiler output
+*.yourmom.c
+output.c
+
+# Compiled binaries (user-built programs)
+yourmom_program
+sqrt_test
+hello_from_dad
+
+Cargo.lock
+
+# Docs I don't want in the repo
+ARCH_DISTRO_HANDOFF.md
+
+# Claude Code internal files
+.claude/
