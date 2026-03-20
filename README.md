@@ -18,10 +18,11 @@ cargo build --release
 ## Documents
 
 > This thing is VERY big so watch out
+
 Full language breakdown
-[Docs](./LANGUAGE_SPEC.md)
+[Full language breakdown](./LANGUAGE_SPEC.md)
 Library overview and what they do
-[Docs](./Libraries.md)
+[Libraries](./Libraries.md)
 ---
 
 ## Quick Start
