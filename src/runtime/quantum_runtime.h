@@ -631,4 +631,111 @@ static inline void yo_mama_so_dumb(const char* msg) {
     exit(1);
 }
 
+// ── QoL Extensions ───────────────────────────────────────────────────────────
+
+// yo_mama_so_slow — sleep for N milliseconds
+static inline void yo_mama_so_slow(int ms) {
+    struct timespec ts;
+    ts.tv_sec  = ms / 1000;
+    ts.tv_nsec = (ms % 1000) * 1000000L;
+    nanosleep(&ts, NULL);
+}
+
+// yo_mama_so_random_between — random integer in [min, max] inclusive
+static inline int yo_mama_so_random_between(int min, int max) {
+    _quantum_init_rng();
+    return min + rand() % (max - min + 1);
+}
+
+// yo_mama_so_nosy_about_files — read entire file, returns malloc'd string (caller frees)
+static inline char* yo_mama_so_nosy_about_files(const char* path) {
+    FILE* f = fopen(path, "r");
+    if (!f) {
+        fprintf(stderr, "💀 yo mama so nosy she tried to read '%s' but it don't exist\n", path);
+        return NULL;
+    }
+    fseek(f, 0, SEEK_END);
+    long size = ftell(f);
+    rewind(f);
+    char* buf = (char*)malloc((size_t)(size + 1));
+    if (!buf) { fclose(f); return NULL; }
+    fread(buf, 1, (size_t)size, f);
+    buf[size] = '\0';
+    fclose(f);
+    return buf;
+}
+
+// yo_mama_so_chatty_about_files — write string to file, returns 1 on success
+static inline int yo_mama_so_chatty_about_files(const char* path, const char* content) {
+    FILE* f = fopen(path, "w");
+    if (!f) {
+        fprintf(stderr, "💀 yo mama so chatty she couldn't even write to '%s'\n", path);
+        return 0;
+    }
+    fputs(content, f);
+    fclose(f);
+    return 1;
+}
+
+// yo_mama_so_found — returns 1 if needle is in haystack, 0 if not
+static inline int yo_mama_so_found(const char* haystack, const char* needle) {
+    return strstr(haystack, needle) != NULL ? 1 : 0;
+}
+
+// yo_mama_so_upper — uppercase string in place, returns it
+static inline char* yo_mama_so_upper(char* s) {
+    for (char* p = s; *p; p++) *p = (char)toupper((unsigned char)*p);
+    return s;
+}
+
+// yo_mama_so_lower — lowercase string in place, returns it
+static inline char* yo_mama_so_lower(char* s) {
+    for (char* p = s; *p; p++) *p = (char)tolower((unsigned char)*p);
+    return s;
+}
+
+// yo_mama_so_stressed — benchmark: collapse 1000 quantum variables, print timing
+static inline void yo_mama_so_stressed(void) {
+    printf("💀 YO MAMA STRESS TEST — hold onto your ass\n");
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    volatile int sink = 0;
+    for (int i = 0; i < 1000; i++) {
+        int vals[] = { i, i*2, i*3, i*4, i*5 };
+        quantum_int q;
+        q.values        = vals;
+        q.count         = 5;
+        q.collapsed_idx = -1;
+        q.collapsed_val = 0;
+        sink += _quantum_observe(&q);
+    }
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    double ms = (t1.tv_sec - t0.tv_sec) * 1000.0
+              + (t1.tv_nsec - t0.tv_nsec) / 1e6;
+
+    printf("  collapsed 1000 quantum vars in %.3f ms\n", ms);
+    printf("  avg collapse time: %.3f μs\n", ms * 1000.0 / 1000.0);
+    printf("  sink (anti-optimize): %d\n", sink);
+
+    // Heisenberg stress
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+    for (int i = 0; i < 1000; i++) {
+        int vals[] = { 1, 2, 3, 4, 5 };
+        quantum_heisenberg h;
+        h.values = vals;
+        h.count  = 5;
+        sink += _quantum_heisenberg_get(&h);
+    }
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    ms = (t1.tv_sec - t0.tv_sec) * 1000.0
+       + (t1.tv_nsec - t0.tv_nsec) / 1e6;
+
+    printf("  1000 heisenberg reads in %.3f ms\n", ms);
+    printf("  avg heisenberg time: %.3f μs\n", ms * 1000.0 / 1000.0);
+    printf("yo mama survived the stress test. barely.\n");
+    (void)sink;
+}
+
 #endif // QUANTUM_RUNTIME_H
