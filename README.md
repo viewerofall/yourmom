@@ -12,7 +12,7 @@ A quantum-enabled esoteric language that transpiles to C. Your mom jokes are the
 git clone https://github.com/viewerofall/yourmom-lang
 cd yourmom-lang
 cargo build --release
-# Add ./target/release/yourmom to your PATH
+sudo cp target/release/yourmom /usr/local/bin
 ```
 
 ## Documents
